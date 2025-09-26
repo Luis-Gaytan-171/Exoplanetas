@@ -5,7 +5,7 @@ la idea es que podamos ver los datos de manera ordenada según diferentes criter
 
 ---
 
-## idea general del proyecto
+## Idea general del proyecto
 cada planeta que registremos va a tener datos como:  
 - nombre  
 - año de descubrimiento  
@@ -18,7 +18,7 @@ lo que queremos es poder **ordenar y ver estos planetas de diferentes formas**, 
 
 ---
 
-## avance del proyecto
+## Avance del proyecto
 para este avance estamos incluyendo:  
 - la clase `planeta`, que guarda toda la info básica de cada exoplaneta.  
 - un `vector<planeta>` que usamos como lista para tener guardados a todos los planetas.  
@@ -27,7 +27,7 @@ para este avance estamos incluyendo:
 
 ---
 
-## cómo se usa el programa
+## Cómo se usa el programa
 1. cuando arranca, el programa lee un archivo `exoplanetas.csv` con datos ya guardados.  
 2. el usuario puede pedir que se muestre la lista de planetas o que se ordene por algún criterio.  
 3. el programa aplica el algoritmo de ordenamiento seleccionado (por defecto usamos mergesort).  
@@ -35,7 +35,7 @@ para este avance estamos incluyendo:
 
 ---
 
-## selección y análisis de algoritmos de ordenamiento
+## Selección y análisis de algoritmos de ordenamiento
 
 ### mergesort
 - complejidad: O(n log n) en todos los casos.  
@@ -62,5 +62,3 @@ para este avance estamos incluyendo:
 - por qué no lo usamos: siempre tarda mucho y además no mantiene el orden estable. solo lo consideramos como comparación o ejemplo básico.  
 
 ---
-
-✅ con esto el proyecto
