@@ -2,50 +2,40 @@
 #ifndef CATALOGO_H
 #define CATALOGO_H
 
-// incluir dependencias
-#include <vector>
+// incluir list
+#include <list>
+// incluir string
 #include <string>
-#include <functional>
+// incluir iostream para imprimir
+#include <iostream>
+// incluir planera
 #include "Planeta.h"
 
 // declarar clase catalogo
 class Catalogo {
-    // declarar contenedor de planetas
-    std::vector<Planeta> planetas;
-
-    // declarar mergesort generico estable sobre vector y comparador
-    static void mergeSort(std::vector<Planeta>& a,
-                          int l,
-                          int r,
-                          const std::function<bool(const Planeta&, const Planeta&)>& cmp);
-
-    // declarar funcion merge estable
-    static void merge(std::vector<Planeta>& a,
-                      int l,
-                      int m,
-                      int r,
-                      const std::function<bool(const Planeta&, const Planeta&)>& cmp);
+    // declarar contenedor lista doblemente ligada
+    std::list<Planeta> planetas;
 
 public:
-    // declarar carga desde csv
+    // declarar metodo cargar desde csv
     bool cargarCSV(const std::string& ruta, bool saltarHeader = true);
-
-    // declarar alta de planeta
+    // declarar metodo agregar planeta
     void agregar(const Planeta& p);
-
-    // declarar obtener referencia del vector
-    const std::vector<Planeta>& getTodos() const;
-
-    // declarar impresion en consola
+    // declarar metodo imprimir
     void imprimir(int maxFilas = -1) const;
 
-    // declarar ordenamientos por distintos criterios
+    // declarar metodos de ordenamiento
     void ordenarPorAnioAsc();
+    // declarar metodos de ordenamiento
     void ordenarPorAnioDesc();
+    // declarar metodos de ordenamiento
     void ordenarPorDistanciaAsc();
+    // declarar metodos de ordenamiento
     void ordenarPorDistanciaDesc();
+    // declarar metodos de ordenamiento
     void ordenarPorMasaAsc();
+    // declarar metodos de ordenamiento
     void ordenarPorRadioAsc();
 };
 
-#endif // CATALOGO_H
+#endif
