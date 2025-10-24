@@ -44,6 +44,12 @@ en este segundo avance hicimos mejoras para que el sistema almacene, ordene y ac
 
 ## cómo se usa el programa
 1. al arrancar, el programa pide la ruta del archivo `exoplanetas.csv` (por ejemplo `./exoplanetas.csv`).  
+
+   > **tip para copiar la ruta completa del archivo:**  
+   > - en **Windows**, haz clic derecho sobre el archivo `exoplanetas.csv` → selecciona **“Copiar como ruta”** y pégala directamente en la consola.  
+   > - si la ruta tiene espacios (como `C:\Users\Luis\Documentos\Exoplanetas dataset\exoplanetas.csv`), asegúrate de **pegarla entre comillas** para que se lea completa.  
+   > - en **Linux o Mac**, puedes arrastrar el archivo a la terminal o usar una ruta relativa como `./exoplanetas.csv` si está en la misma carpeta del programa.  
+
 2. se cargan los datos a la estructura del catálogo (lista doblemente ligada).  
 3. desde el menú, el usuario puede:
    - **mostrar** la lista de planetas,  
