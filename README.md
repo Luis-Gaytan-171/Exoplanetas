@@ -39,16 +39,6 @@ en este segundo avance hicimos mejoras para que el sistema almacene, ordene y ac
    - y, lo más importante, la posibilidad de usar **`list::sort()`**, que es **estable** y está especificado para ejecutarse en **O(n log n)** (usa una variante de **mergesort** interna).
 
 2. **ordenamiento estable con `list::sort`**  
-   seguimos con **mergesort**, pero aprovechando la versión estable de la lista (evitamos re-implementar y aseguramos el comportamiento esperado por estándar).
-
-3. **sección de compilación/ejecución agregada**  
-   (esto corrige la falta detectada en la retroalimentación).
-
-4. **explicación formal de por qué elegimos mergesort**  
-   ahora describimos **qué significa “estable”** y **por qué su complejidad se mantiene en O(n log n) sin importar el estado inicial**, además de comparar con quicksort/bubble/selection con base en complejidades (no solo “rápido/lento”).
-
-5. **entradas y salidas del avance**  
-   agregamos secciones claras de **entradas** (formato del `.csv`) y **salidas** (qué imprime el programa).
 
 ---
 
