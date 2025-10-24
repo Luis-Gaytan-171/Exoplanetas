@@ -68,7 +68,7 @@ g++ -std=c++17 main.cpp Catalogo.cpp Planeta.cpp -o exoplanetas
 ./exoplanetas
 
 si el compilador te pide ruta absoluta o estás en windows, ajusta `./exoplanetas` por `exoplanetas.exe`.
-
+```
 ---
 
 ## descripción de las **entradas** del avance de proyecto
@@ -78,5 +78,71 @@ nombre,anio,distancia,masa,radio,metodo
 Kepler-452b,2015,1400,5.0,1.60,transito
 Proxima Centauri b,2016,4.25,1.27,1.10,velocidad radial
 TRAPPIST-1e,2017,39.6,0.62,0.92,transito
+
+
+- `anio`: entero  
+- `distancia`, `masa`, `radio`: números reales  
+- `metodo`: texto (ej. tránsito, velocidad radial, imagen directa)
+
+> **mecanismo de lectura**: leemos línea a línea con `std::getline`, separamos por comas con `std::stringstream`, convertimos strings a `int`/`double` cuando aplica y construimos un `planeta` con `crearDesdeCSV`. las líneas vacías se ignoran.
+
+---
+
+## descripción de las **salidas** del avance de proyecto
+el programa imprime en consola:
+
+1) **lista de planetas** en el orden actual del contenedor o del criterio aplicado, con formato legible (ejemplo): Proxima Centauri b | anio 2016 | distancia 4.25 al | masa 1.27 mt | radio 1.10 rt | metodo velocidad radial
+
+
+2) **confirmaciones** al ordenar (ej. “orden listo”), o al cargar archivo (ej. “carga exitosa” / “no se pudo abrir el archivo”).
+
+3) **errores amables** si el archivo no existe o el formato no es válido (líneas vacías, etc.).
+
+---
+
+## selección y análisis de algoritmos de ordenamiento
+
+### por qué **mergesort** (y qué significa “estable” aquí)
+- **complejidad garantizada O(n log n)** en **mejor, promedio y peor caso**.  
+  esto ocurre porque mergesort **siempre**:
+  1) **divide** la colección en mitades (log₂ n niveles), y  
+  2) **fusiona** pares de sublistas ordenadas (costo **lineal** por nivel).  
+  el trabajo total es proporcional a `n` por nivel × `log n` niveles → **O(n log n)**, **independiente** de si los datos vienen ya ordenados, reversos o aleatorios.
+
+- **algoritmo estable**: si dos planetas empatan en el atributo de orden (p. ej. mismo `anio`), **conservan su orden relativo anterior**.  
+  esto es clave cuando **encadenamos criterios** (p. ej. primero ordenamos por `anio` y luego por `distancia`; los que comparten `anio` quedarán ordenados por `distancia` **sin romper** el orden previo entre los demás atributos).
+
+- **espacio extra O(n)**: durante la fusión se usan buffers temporales para mezclar las mitades. esa memoria adicional es el “costo” de la estabilidad y de mantener O(n log n) **siempre**.
+
+> en nuestra implementación usamos `std::list::sort()`, que por especificación es **estable** y basado en una variante de **mergesort**, por lo que conserva exactamente estas propiedades.
+
+### comparación formal con otros algoritmos (por qué NO son principales)
+
+**quicksort**  
+- **promedio**: O(n log n)  
+- **peor caso**: **O(n²)** (pivotes repetidamente malos, p. ej. datos ya ordenados con cierta estrategia de pivote)  
+- **estabilidad**: **no**  
+- pros: excelente uso de caché y poca memoria extra;  
+- contras: **no** estable y existe un **peor caso cuadrático**, lo cual no queremos para un flujo que encadena criterios y busca comportamiento predecible.
+
+**bubble sort**  
+- **promedio/peor**: O(n²)  
+- **mejor**: O(n) si la lista ya está casi ordenada (con bandera de “sin swap”)  
+- **estabilidad**: sí  
+- contras: ineficiente en general; útil solo didácticamente o con listas muy pequeñas/casi ordenadas.
+
+**selection sort**  
+- **todos los casos**: O(n²)  
+- **estabilidad**: **no** (clásico)  
+- pros: pocos swaps;  
+- contras: no adaptativo (aunque esté casi ordenada, sigue tardando O(n²)).
+
+**conclusión**  
+usamos **mergesort estable** (vía `list::sort`) para asegurar **complejidad consistente** y **encadenamiento de criterios** sin perder orden relativo.
+
+---
+
+
+
 
 
