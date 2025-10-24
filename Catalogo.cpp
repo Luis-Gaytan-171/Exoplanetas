@@ -1,149 +1,115 @@
 // incluir header de catalogo
 #include "Catalogo.h"
-
-// incluir iostream y fstream
-#include <iostream>
+// incluir fstream para archivos
 #include <fstream>
 
-// definir cargar csv
+// definir metodo cargar desde csv
 bool Catalogo::cargarCSV(const std::string& ruta, bool saltarHeader) {
-    // abrir archivo
+    // abrir archivo en lectura
     std::ifstream fin(ruta);
     // validar apertura
-    if (!fin.is_open()) return false;
+    if (!fin.is_open()) {
+        // regresar falso en error
+        return false;
+    }
+
+    // variable para lineas
+    std::string linea;
+
+    // opcional saltar encabezado
+    if (saltarHeader && std::getline(fin, linea)) {
+        // encabezado omitido
+    }
 
     // leer linea por linea
-    std::string linea;
-    // saltar encabezado si aplica
-    if (saltarHeader && std::getline(fin, linea)) { /* header omitido */ }
-
-    // procesar lineas
     while (std::getline(fin, linea)) {
         // ignorar lineas vacias
         if (linea.empty()) continue;
-        // crear planeta
-        Planeta p = Planeta::fromCSV(linea);
-        // agregar al vector
+        // crear planeta desde csv
+        Planeta p = Planeta::crearDesdeCSV(linea);
+        // agregar a la lista
         planetas.push_back(p);
     }
 
     // cerrar archivo
     fin.close();
+    // regresar exito
     return true;
 }
 
-// definir agregar
+// definir metodo agregar
 void Catalogo::agregar(const Planeta& p) {
     // insertar al final
     planetas.push_back(p);
 }
 
-// definir getTodos
-const std::vector<Planeta>& Catalogo::getTodos() const {
-    // retornar referencia constante
-    return planetas;
-}
-
-// definir imprimir
+// definir metodo imprimir
 void Catalogo::imprimir(int maxFilas) const {
+    // contador de filas impresas
+    int count = 0;
     // calcular limite
-    int limite = (maxFilas < 0 || maxFilas > (int)planetas.size()) ? (int)planetas.size() : maxFilas;
-
-    // recorrer y mostrar
-    for (int i = 0; i < limite; ++i) {
-        // imprimir linea formateada
-        std::cout << planetas[i].toString() << std::endl;
+    int limite = maxFilas < 0 ? static_cast<int>(planetas.size()) : maxFilas;
+    // recorrer lista
+    for (const auto& p : planetas) {
+        // imprimir linea legible
+        std::cout << p.hacerTextoLegible() << std::endl;
+        // aumentar contador
+        ++count;
+        // romper si alcanzamos limite
+        if (count >= limite) break;
     }
 }
 
-// definir mergesort publico por criterios
+// definir ordenar por anio ascendente
 void Catalogo::ordenarPorAnioAsc() {
-    // definir comparador por anio ascendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getAnio() < b.getAnio(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar anio
+        return a.getAnio() < b.getAnio();
+    });
 }
 
+// definir ordenar por anio descendente
 void Catalogo::ordenarPorAnioDesc() {
-    // definir comparador por anio descendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getAnio() > b.getAnio(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar anio descendente
+        return a.getAnio() > b.getAnio();
+    });
 }
 
+// definir ordenar por distancia ascendente
 void Catalogo::ordenarPorDistanciaAsc() {
-    // definir comparador por distancia ascendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getDistancia() < b.getDistancia(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar distancia
+        return a.getDistancia() < b.getDistancia();
+    });
 }
 
+// definir ordenar por distancia descendente
 void Catalogo::ordenarPorDistanciaDesc() {
-    // definir comparador por distancia descendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getDistancia() > b.getDistancia(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar distancia descendente
+        return a.getDistancia() > b.getDistancia();
+    });
 }
 
+// definir ordenar por masa ascendente
 void Catalogo::ordenarPorMasaAsc() {
-    // definir comparador por masa ascendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getMasa() < b.getMasa(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar masa
+        return a.getMasa() < b.getMasa();
+    });
 }
 
+// definir ordenar por radio ascendente
 void Catalogo::ordenarPorRadioAsc() {
-    // definir comparador por radio ascendente
-    auto cmp = [](const Planeta& a, const Planeta& b){ return a.getRadio() < b.getRadio(); };
-    // aplicar mergesort
-    mergeSort(planetas, 0, (int)planetas.size() - 1, cmp);
-}
-
-// definir mergesort recursivo
-void Catalogo::mergeSort(std::vector<Planeta>& a,
-                         int l,
-                         int r,
-                         const std::function<bool(const Planeta&, const Planeta&)>& cmp) {
-    // caso base
-    if (l >= r) return;
-
-    // calcular punto medio
-    int m = l + (r - l) / 2;
-
-    // ordenar mitad izquierda
-    mergeSort(a, l, m, cmp);
-    // ordenar mitad derecha
-    mergeSort(a, m + 1, r, cmp);
-    // combinar de forma estable
-    merge(a, l, m, r, cmp);
-}
-
-// definir merge estable
-void Catalogo::merge(std::vector<Planeta>& a,
-                     int l,
-                     int m,
-                     int r,
-                     const std::function<bool(const Planeta&, const Planeta&)>& cmp) {
-    // crear copias temporales
-    std::vector<Planeta> left(a.begin() + l, a.begin() + m + 1);
-    std::vector<Planeta> right(a.begin() + m + 1, a.begin() + r + 1);
-
-    // indices
-    int i = 0, j = 0, k = l;
-
-    // fusion estable
-    while (i < (int)left.size() && j < (int)right.size()) {
-        // elegir de manera estable
-        if (cmp(left[i], right[j]) || (!cmp(right[j], left[i]))) {
-            a[k++] = left[i++];
-        } else {
-            a[k++] = right[j++];
-        }
-    }
-
-    // copiar remanentes izquierda
-    while (i < (int)left.size()) a[k++] = left[i++];
-
-    // copiar remanentes derecha
-    while (j < (int)right.size()) a[k++] = right[j++];
+    // aplicar sort con comparador
+    planetas.sort([](const Planeta& a, const Planeta& b){
+        // comparar radio
+        return a.getRadio() < b.getRadio();
+    });
 }
