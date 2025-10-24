@@ -23,7 +23,7 @@ lo que queremos es poder **ordenar y ver estos planetas de diferentes formas**, 
 para este avance estamos incluyendo:  
 - la clase `planeta`, que guarda la info básica de cada exoplaneta.  
 - la clase `catalogo`, que almacena todos los planetas y expone funciones para cargar, mostrar y ordenar.  
-- funciones para leer desde un archivo `.csv` (con `crearDesdeCSV`) y para imprimir “bonito” cada planeta (con `hacerTextoLegible`).  
+- funciones para leer desde un archivo `.csv` (con `crearDesdeCSV`) y para imprimir estetico cada planeta (con `hacerTextoLegible`).  
 - **ordenamiento con mergesort estable** aplicado al contenedor de planetas.  
 
 > nota: en el avance anterior empezamos con `vector<planeta>`. en este avance **migramos a `std::list<planeta>`** (lista doblemente ligada) para almacenar los datos de forma más natural y poder ordenar con el `sort()` propio de la lista (que es **estable** y de complejidad **O(n log n)**).
