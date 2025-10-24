@@ -138,7 +138,7 @@ el programa imprime en consola:
 - contras: no adaptativo (aunque esté casi ordenada, sigue tardando O(n²)).
 
 **conclusión**  
-usamos **mergesort estable** (vía `list::sort`) para asegurar **complejidad consistente** y **encadenamiento de criterios** sin perder orden relativo.
+usamos **mergesort** (vía `list::sort`) para asegurar **complejidad consistente** y **encadenamiento de criterios** sin perder orden relativo.
 
 ---
 
