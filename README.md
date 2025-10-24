@@ -18,7 +18,7 @@ lo que queremos es poder **ordenar y ver estos planetas de diferentes formas**, 
 
 ---
 
-## describe tu avance de proyecto (avance 2)
+## avance 2
 
 para este avance estamos incluyendo:  
 - la clase `planeta`, que guarda la info básica de cada exoplaneta.  
