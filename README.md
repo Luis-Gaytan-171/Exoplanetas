@@ -102,7 +102,7 @@ el programa imprime en consola:
 
 ## selección y análisis de algoritmos de ordenamiento
 
-### por qué **mergesort** (y qué significa “estable” aquí)
+### por que **mergesort** (y qué significa “estable” aquí)
 - **complejidad garantizada O(n log n)** en **mejor, promedio y peor caso**.  
   esto ocurre porque mergesort **siempre**:
   1) **divide** la colección en mitades (log₂ n niveles), y  
@@ -112,28 +112,25 @@ el programa imprime en consola:
 - **algoritmo estable**: si dos planetas empatan en el atributo de orden (p. ej. mismo `anio`), **conservan su orden relativo anterior**.  
   esto es clave cuando **encadenamos criterios** (p. ej. primero ordenamos por `anio` y luego por `distancia`; los que comparten `anio` quedarán ordenados por `distancia` **sin romper** el orden previo entre los demás atributos).
 
-- **espacio extra O(n)**: durante la fusión se usan buffers temporales para mezclar las mitades. esa memoria adicional es el “costo” de la estabilidad y de mantener O(n log n) **siempre**.
+- **espacio extra O(n)**: durante la fusión se usan buffers temporales para mezclar las mitades. esa memoria adicional es como la penalizacion de la estabilidad y de mantener O(n log n) **siempre**.
 
-> en nuestra implementación usamos `std::list::sort()`, que por especificación es **estable** y basado en una variante de **mergesort**, por lo que conserva exactamente estas propiedades.
+> en la implementación usamos `std::list::sort()`, que por especificación es **estable**(como ya explicamos anteriormente) y basado en una variante de **mergesort**, por lo que conserva exactamente estas propiedades.
 
 ### comparación formal con otros algoritmos (por qué NO son principales)
 
 **quicksort**  
 - **promedio**: O(n log n)  
-- **peor caso**: **O(n²)** (pivotes repetidamente malos, p. ej. datos ya ordenados con cierta estrategia de pivote)  
-- **estabilidad**: **no**  
-- pros: excelente uso de caché y poca memoria extra;  
+- **peor caso**: **O(n²)** (pivotes repetidamente malos, p. ej. datos ya ordenados con cierta estrategia de pivote)   
+- pros: poca memoria extra;  
 - contras: **no** estable y existe un **peor caso cuadrático**, lo cual no queremos para un flujo que encadena criterios y busca comportamiento predecible.
 
 **bubble sort**  
 - **promedio/peor**: O(n²)  
 - **mejor**: O(n) si la lista ya está casi ordenada (con bandera de “sin swap”)  
-- **estabilidad**: sí  
-- contras: ineficiente en general; útil solo didácticamente o con listas muy pequeñas/casi ordenadas.
+- contras: ineficiente en general; útil solo para aprender a implementar algoritmos de ordenamiento o con listas muy pequeñas/casi ordenadas.
 
 **selection sort**  
-- **todos los casos**: O(n²)  
-- **estabilidad**: **no** (clásico)  
+- **todos los casos**: O(n²)   
 - pros: pocos swaps;  
 - contras: no adaptativo (aunque esté casi ordenada, sigue tardando O(n²)).
 
