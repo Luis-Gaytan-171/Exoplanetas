@@ -87,3 +87,13 @@ Planeta Planeta::crearDesdeCSV(const std::string& linea) {
     // crear y regresar planeta
     return Planeta(nombreS, anioV, distanciaV, masaV, radioV, metodoS);
 }
+
+// definir metodo para convertir a csv
+std::string Planeta::convertirACsv() const {
+    // crear stream de salida
+    std::ostringstream out;
+    // escribir campos separados por coma
+    out << nombre << "," << anio << "," << distancia << "," << masa << "," << radio << "," << metodo;
+    // regresar linea csv
+    return out.str();
+}
