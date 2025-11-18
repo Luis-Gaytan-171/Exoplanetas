@@ -6,9 +6,9 @@
 #include <list>
 // incluir string
 #include <string>
-// incluir iostream para imprimir
+// incluir iostream
 #include <iostream>
-// incluir planera
+// incluir planeta
 #include "Planeta.h"
 
 // declarar clase catalogo
@@ -23,6 +23,10 @@ public:
     void agregar(const Planeta& p);
     // declarar metodo imprimir
     void imprimir(int maxFilas = -1) const;
+    // declarar metodo buscar por nombre
+    bool buscarPorNombre(const std::string& nombre, Planeta& encontrado) const;
+    // declarar metodo guardar en csv
+    bool guardarCSV(const std::string& ruta, bool incluirHeader = true) const;
 
     // declarar metodos de ordenamiento
     void ordenarPorAnioAsc();
