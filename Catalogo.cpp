@@ -21,6 +21,9 @@ bool Catalogo::cargarCSV(const std::string& ruta, bool saltarHeader) {
         // encabezado omitido
     }
 
+    // limpiar lista actual
+    planetas.clear();
+
     // leer linea por linea
     while (std::getline(fin, linea)) {
         // ignorar lineas vacias
@@ -58,6 +61,50 @@ void Catalogo::imprimir(int maxFilas) const {
         // romper si alcanzamos limite
         if (count >= limite) break;
     }
+}
+
+// definir metodo buscar por nombre
+bool Catalogo::buscarPorNombre(const std::string& nombre, Planeta& encontrado) const {
+    // recorrer lista
+    for (const auto& p : planetas) {
+        // comparar nombre
+        if (p.getNombre() == nombre) {
+            // copiar planeta encontrado
+            encontrado = p;
+            // regresar verdadero
+            return true;
+        }
+    }
+    // regresar falso si no se encontro
+    return false;
+}
+
+// definir metodo guardar en csv
+bool Catalogo::guardarCSV(const std::string& ruta, bool incluirHeader) const {
+    // abrir archivo en escritura
+    std::ofstream fout(ruta);
+    // validar apertura
+    if (!fout.is_open()) {
+        // regresar falso en error
+        return false;
+    }
+
+    // escribir encabezado opcional
+    if (incluirHeader) {
+        // escribir header
+        fout << "nombre,anio,distancia,masa,radio,metodo\n";
+    }
+
+    // recorrer lista
+    for (const auto& p : planetas) {
+        // escribir linea csv
+        fout << p.convertirACsv() << "\n";
+    }
+
+    // cerrar archivo
+    fout.close();
+    // regresar exito
+    return true;
 }
 
 // definir ordenar por anio ascendente
