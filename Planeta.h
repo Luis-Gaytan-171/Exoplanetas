@@ -49,6 +49,9 @@ public:
 
     // declarar metodo para crear objeto desde csv
     static Planeta crearDesdeCSV(const std::string& linea);
+
+    // declarar metodo para convertir a csv
+    std::string convertirACsv() const;
 };
 
 // terminar proteccion de inclusion
