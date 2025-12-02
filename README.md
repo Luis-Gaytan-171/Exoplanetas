@@ -110,15 +110,14 @@ el archivo de salida puede volver a usarse como entrada en futuras ejecuciones.
 
 ### Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
 
-el algoritmo de ordenamiento principal del proyecto es mergesort, implementado a través de std::list::sort() en la clase Catalogo. según la especificación de la librería estándar, list::sort() está implementado como un algoritmo de tipo mergesort estable, con complejidad:
+el algoritmo de ordenamiento principal del proyecto es mergesort, implementado mediante std::list::sort(). según la especificación de la librería estándar, este sort() aplica un mergesort estable cuya complejidad es:
 
-O(n log n) en el mejor caso, en su caso promedio y en el peor caso, porque siempre:
-divide la lista en mitades (log₂ n niveles), y
-fusiona sublistas ya ordenadas en un paso lineal por nivel.
+Mejor caso: O(n log n)
+Caso promedio: O(n log n)
+Peor caso: O(n log n)
 
-el trabajo total es proporcional a n elementos por cada uno de los log n niveles, así que el costo final es O(n log n) sin importar si los datos están ya ordenados, parcialmente ordenados o totalmente desordenados.
-
-además, el algoritmo es estable: si dos planetas coinciden en el atributo que se usa para ordenar (por ejemplo, el mismo anio), ambos conservan su orden relativo anterior. esto es importante porque a veces encadenamos ordenamientos por diferentes atributos, y la estabilidad garantiza que no se rompa o falle el orden previo cuando hay coincidencias.
+esto se debe a que mergesort siempre divide la lista en mitades (log₂ n niveles), y fusiona sublistas en un paso lineal por nivel.
+por eso, sin importar si los datos están ordenados, casi ordenados o completamente desordenados, la complejidad permanece O(n log n).
 
 en el código, esta competencia se observa en las funciones:
 
@@ -135,74 +134,79 @@ por estas razones, mergesort (vía list::sort) fue elegido y analizado como la m
 
 ### Hace un análisis de complejidad correcto y completo de todas las estructuras de datos y cada uno de sus usos en el programa.
 
-la estructura de datos principal es std::list<Planeta>, una lista doblemente ligada. las operaciones que usamos y su complejidad son:
+la estructura principal es std::list<Planeta>. sus complejidades son:
 
-- inserción al final con push_back → O(1)
-se usa cuando cargamos planetas desde el archivo (Catalogo::cargarCSV) o cuando agregamos uno nuevo manualmente.
+Inserción con push_back
 
-- recorrido de la lista → O(n)
-aparece al imprimir todos los planetas (Catalogo::imprimir), al buscar por nombre (Catalogo::buscarPorNombre) y al recorrer para escribir en archivo (Catalogo::guardarCSV).
+Mejor caso: O(1)
+Caso promedio: O(1)
+Peor caso: O(1)
 
-- ordenamiento con list::sort → O(n log n)
-ya analizado arriba como mergesort estable.
+Recorrido de la lista (impresión, búsqueda, guardado)
 
-- tamaño de la lista → se usa de forma implícita al recorrer, pero no se consulta de manera costosa; cada recorrido completo es O(n).
+Mejor caso: O(1) si se encuentra el elemento al inicio (solo para búsqueda)
+Caso promedio: O(n)
+Peor caso: O(n)
 
-otras estructuras que aparecen son:
+Ordenamiento con list::sort()
 
-- std::string, para almacenar nombre, método y valores leídos. las operaciones principales usadas son concatenación simple y comparación, que en este contexto se consideran O(longitud de la cadena), pero como son textos relativamente cortos (nombres y métodos), el costo principal lo domina el número de planetas n.
+Mejor caso: O(n log n)
+Caso promedio: O(n log n)
+Peor caso: O(n log n)
 
-- std::ifstream y std::ofstream, usados para lectura y escritura de archivos: cada lectura/escritura por línea es O(longitud de la línea), y al trabajar con n planetas el proceso completo es O(n).
+Lectura y escritura de archivos (lineal en n)
 
-con esto se cubre el análisis de complejidad de la estructura de datos principal y de su uso en las funciones relevantes del programa.
+Mejor caso: O(n)
+Caso promedio: O(n)
+Peor caso: O(n)
+
+el costo total de trabajar con la lista se mantiene lineal salvo cuando se ordena, operación dominada por O(n log n).
 
 ### Hace un análisis de complejidad correcto y completo para todos los demás componentes del programa y determina la complejidad final del programa.
 
-además del ordenamiento y de la estructura principal, analizamos los demás componentes:
+#### Lectura de archivo (cargarCSV)
 
-   lectura de archivo (Catalogo::cargarCSV):
-   
-      leemos el archivo línea por línea con std::getline → O(n) líneas.
+Mejor caso: O(n)
+Caso promedio: O(n)
+Peor caso: O(n)
 
-      para cada línea, se separan los campos con std::stringstream y se convierten a tipos numéricos (stoi, stod) → O(1) por línea.
+#### Impresión del catálogo
 
-      se construye un Planeta y se inserta con push_back → O(1) por línea.
+Mejor caso: O(n) (no hay forma más rápida; siempre recorre todo)
+Caso promedio: O(n)
+Peor caso: O(n)
 
-      complejidad total de carga → O(n).
+#### Búsqueda por nombre
 
-   impresión de la lista (Catalogo::imprimir):
+Mejor caso: O(1) (si el primero coincide)
+Caso promedio: O(n)
+Peor caso: O(n)
 
-      recorre toda la lista y llama hacerTextoLegible para cada planeta.
-      hacerTextoLegible trabaja con una cantidad constante de campos → O(1) por planeta.
-      recorrido completo → O(n).
+#### Escritura de archivo
 
-   búsqueda por nombre (Catalogo::buscarPorNombre):
+Mejor caso: O(n)
+Caso promedio: O(n)
+Peor caso: O(n)
 
-      recorre la lista hasta encontrar coincidencia o terminar → en el peor caso recorre todos los elementos.
-      complejidad → O(n).
+#### Ciclo del menú
 
-   escritura de archivo (Catalogo::guardarCSV):
+dependiendo de la opción:
 
-      recorre la lista y escribe una línea por planeta usando convertirACsv.
+mostrar planetas → O(n)
+buscar → O(n) promedio
+ordenar →
+  Mejor caso: O(n log n)
+  Caso promedio: O(n log n)
+  Peor caso: O(n log n)
+mostrar después de ordenar → O(n)
 
-      operación O(1) por planeta, O(n) en total.
+##### Complejidad total del programa
 
-   ciclo del menú en main:
+Mejor caso: O(n)
+Caso promedio: O(n log n) (si el usuario ordena al menos una vez)
+Peor caso: O(n log n)
 
-      cada iteración realiza operaciones O(1), O(n) o O(n log n) dependiendo de la opción:
-
-      mostrar planetas → O(n),
-
-      buscar → O(n),
-
-      ordenar → O(n log n) y luego mostrar → O(n).
-   
-la complejidad final del programa, considerando las operaciones principales que puede elegir el usuario, está dominada por los ordenamientos, que son O(n log n).
-las otras operaciones (carga, impresión, búsqueda, escritura) son O(n). por lo tanto, la complejidad global del sistema puede resumirse como:
-
-O(n) para cargar, imprimir, buscar y guardar. como caso promedio
-
-O(n log n) cuando se realiza un ordenamiento, que es el caso promedio
+el componente dominante del sistema es el ordenamiento con complejidad O(n log n).
 
 ## SICT0302: Toma decisiones
       
